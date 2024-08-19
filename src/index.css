@@ -1,0 +1,347 @@
+body {
+  font-family: 'Lato', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.card {
+  display: flex;
+  background-color: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 1px 10px rgba(1,1,1,0.4);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+  justify-content: center;
+  max-width: 90%;
+  height: 130px;
+  /*max-height: 120px;*/
+  margin: 0 auto;
+  flex: 1;
+  /*min-height: 120px;*/
+  
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+.card img {
+  width: 50%;
+  object-fit: cover;
+}
+.card-content {
+  padding: 15px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+.card-title {
+  font-weight: bold;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  margin: 0 0 5px 0;
+  font-size: 1.4em;
+  text-align: left;
+}
+.card-price {
+  position: static;
+  font-weight: bold;
+  color: white; /* Texto blanco */
+  background-color: #e74c3c; /* Fondo rojo */
+  padding: 5px 5px; /* Espaciado interno para el cuadro */
+  border-radius: 10px; /* Bordes redondeados */
+  width: fit-content;
+  font-family: 'Times New Roman', Times, serif;
+  margin-top: auto;
+  margin-bottom: 0;
+  font-size: 1.4rem;
+  text-shadow: none; /* O puedes añadir un color si deseas sombra */
+
+}
+
+.card-description {
+  font-size: 0.9em;
+  color: #7f8c8d;
+  margin: 0;
+}
+
+.menu-container {
+  text-align: center; /* Centra el contenido del menú */
+  padding: 10px; /* Espaciado alrededor del contenedor */
+  background-color: #f9f9f9; /* Color de fondo para el contenedor del menú */
+}
+
+.menu-container h1 {
+  font-size: 2.5rem; /* Tamaño de fuente grande para el título */
+  font-weight: bold; /* Fuente en negritas */
+  color: #333; /* Color del texto del título */
+  margin-top: 10px;
+  margin-bottom: 30px; /* Espaciado debajo del título */
+  text-transform: uppercase;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.menu-grid {
+  display: grid; /* Usa un diseño de cuadrícula para los elementos del menú */
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Ajusta el número de columnas automáticamente */
+  gap: 20px; /* Espaciado entre las tarjetas del menú */
+  justify-content: center; /* Centra el contenido de la cuadrícula */
+}
+/* index.css */
+
+.menu-detail {
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-detail-image {
+  width: 100%; /* La imagen ocupa todo el ancho del contenedor */
+  height: 50%; /* Mantiene la proporción de la imagen */
+  object-fit: cover; /* Ajusta la imagen para cubrir el área */
+}
+
+.menu-detail-title {
+  font-size: 2.5rem; /* Tamaño de fuente grande para el título */
+  font-weight: bold; /* Fuente en negritas */
+  color: #333; /* Color del texto */
+  text-align: left; /* Alineación del texto a la izquierda */
+  margin-left: 20px; /* Margen a la izquierda */
+  margin-right: 10px;
+  margin-bottom: 10px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  
+}
+
+.menu-detail-price {
+  font-size: 1.6rem; /* Tamaño de fuente grande para el precio */
+  font-weight: lighter; /* Fuente en negritas */
+  color: #213fff44; /* Color del texto del precio */
+  margin-left: 20px; /* Margen a la izquierda */
+  margin-right: 10px;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.menu-detail-description {
+  font-size: 1.4rem; /* Tamaño de fuente para la descripción */
+  color: #7f8c8d; /* Color del texto de la descripción */
+  text-align: left; /* Alineación del texto a la izquierda */
+  line-height: 1.6; /* Altura de línea para mejorar la legibilidad */
+  margin-left: 20px; /* Margen a la izquierda */
+  margin-right: 10px;
+  margin-top: 0;
+}
+
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+.admin {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.admin h1, .admin h2 {
+  text-align: center;
+  color: #333;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  text-transform: uppercase;
+  margin-bottom: 30px;
+  font-size: 2rem;
+}
+
+.admin ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.admin li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  max-height: 150px;
+}
+
+.admin li img {
+  width: 40%;
+  height: 120px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.product-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.product-name {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.product-price {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #e74c3c;
+  margin-bottom: 10px;
+}
+
+.product-description {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  max-height: 50px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product-actions {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.admin li button {
+  padding: 5px 10px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+.admin li button:nth-child(1) {
+  background-color: #3b35dc;
+}
+
+.admin li button:nth-child(1):hover {
+  background-color: #0056b3;
+}
+
+.admin li button:nth-child(2) {
+  background-color: #c82333;
+}
+
+.admin li button:nth-child(2):hover {
+  background-color: #a71d2a;
+}
+.admin-edit {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.admin-edit-input {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin: 0 auto;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  outline: none;
+}
+
+.admin-edit-file-input {
+  width: calc(100% - 20px);
+  margin: 0 auto;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  outline: none;
+}
+
+.admin-edit-button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  background-color: #3b35dc;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.admin-edit-button:hover {
+  background-color: #0056b3;
+}
+
+.admin-add {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.admin-add-input {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin: 0 auto;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  outline: none;
+}
+
+.admin-add-file-input {
+  width: calc(100% - 20px);
+  margin: 0 auto;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  outline: none;
+}
+
+.admin-add-button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  background-color: #15af41;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 10px;
+}
+.admin-current-image {
+  height: 250px;
+  object-fit: cover;
+  margin-top: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+.admin-change-image-button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  background-color: #d81717;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 10px;
+  
+}
