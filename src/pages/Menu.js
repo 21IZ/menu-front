@@ -12,6 +12,9 @@ function Menu() {
       try {
         setLoading(true);
         const response = await fetch('/api/getMenu');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const data = await response.json();
         setMenuItems(data);
       } catch (error) {
