@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import Card from '../components/Card';
 import '../index.css';
 
 function Menu() {
   const [menuItems, setMenuItems] = useState([]);
-  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 

@@ -5,7 +5,6 @@ function AdminPanel() {
   const [newItem, setNewItem] = useState({ nombre: '', descripcion: '', precio: '', imagen: null });
   const [editingItem, setEditingItem] = useState(null);
   const [previewImage, setPreviewImage] = useState('');
-  const [originalImage, setOriginalImage] = useState('');
 
   useEffect(() => {
     fetchMenuItems();
@@ -55,7 +54,6 @@ function AdminPanel() {
   const handleEdit = (item) => {
     setEditingItem(item);
     setPreviewImage(item.imagen || '');
-    setOriginalImage(item.imagen || '');
   };
 
   const handleSaveEdit = async () => {
