@@ -23,19 +23,43 @@ function AdminPanel() {
     }
   }
 
+  const handleImageUpload = async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const response = await fetch('/api/uploadImage', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al subir la imagen');
+      }
+
+      const data = await response.json();
+      return data.url;
+    } catch (error) {
+      console.error('Error al subir la imagen:', error);
+      throw error;
+    }
+  };
+
   const handleAdd = async () => {
-    if (!newItem.nombre || !newItem.descripcion || !newItem.precio) {
+    if (!newItem.nombre || !newItem.descripcion || !newItem.precio || !newItem.imagen) {
       alert('Por favor completa todos los campos');
       return;
     }
 
     try {
+      const imageUrl = await handleImageUpload(newItem.imagen);
+
       const response = await fetch('/api/addMenuItem', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(newItem),
+        body: JSON.stringify({ ...newItem, imagen: imageUrl }),
       });
 
       if (!response.ok) {
@@ -58,12 +82,17 @@ function AdminPanel() {
 
   const handleSaveEdit = async () => {
     try {
+      let imageUrl = editingItem.imagen;
+      if (editingItem.imagen instanceof File) {
+        imageUrl = await handleImageUpload(editingItem.imagen);
+      }
+
       const response = await fetch(`/api/updateMenuItem?id=${editingItem.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(editingItem),
+        body: JSON.stringify({ ...editingItem, imagen: imageUrl }),
       });
 
       if (!response.ok) {
@@ -97,8 +126,8 @@ function AdminPanel() {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    setNewItem({ ...newItem, imagen: file });
     if (file) {
+      setNewItem({ ...newItem, imagen: file });
       setPreviewImage(URL.createObjectURL(file));
     }
   };
@@ -153,8 +182,8 @@ function AdminPanel() {
             type="file"
             onChange={(e) => {
               const file = e.target.files[0];
-              setEditingItem({ ...editingItem, imagen: file });
               if (file) {
+                setEditingItem({ ...editingItem, imagen: file });
                 setPreviewImage(URL.createObjectURL(file));
               }
             }}
