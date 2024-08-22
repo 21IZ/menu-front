@@ -13,9 +13,9 @@ function Menu() {
     async function fetchMenuItems() {
       try {
         setLoading(true);
-        const response = await axios.get(`${API_URL}/api/menu`);
-        console.log('Received menu items:', response.data);
-        setMenuItems(response.data);
+        const response = await fetch('/api/getMenu');
+        const data = await response.json();
+        setMenuItems(data);
       } catch (error) {
         console.error('Error fetching the menu items', error);
         setError('Error al cargar el menú. Por favor, intenta de nuevo más tarde.');
@@ -24,7 +24,7 @@ function Menu() {
       }
     }
     fetchMenuItems();
-  }, [API_URL]);
+  }, []);
 
   if (loading) return <div>Cargando...</div>;
   if (error) return <div>{error}</div>;

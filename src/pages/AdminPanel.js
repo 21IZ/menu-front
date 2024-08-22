@@ -1,8 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-
-// Asume que has configurado esta variable de entorno en Vercel
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
 function AdminPanel() {
   const [menuItems, setMenuItems] = useState([]);
@@ -12,16 +8,21 @@ function AdminPanel() {
   const [originalImage, setOriginalImage] = useState('');
 
   useEffect(() => {
-    async function fetchMenuItems() {
-      try {
-        const response = await axios.get(`${API_URL}/api/menu`);
-        setMenuItems(response.data);
-      } catch (error) {
-        console.error('Error al obtener los ítems del menú', error);
-      }
-    }
     fetchMenuItems();
   }, []);
+
+  async function fetchMenuItems() {
+    try {
+      const response = await fetch('/api/getMenu');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setMenuItems(data);
+    } catch (error) {
+      console.error('Error al obtener los ítems del menú', error);
+    }
+  }
 
   const handleAdd = async () => {
     if (!newItem.nombre || !newItem.descripcion || !newItem.precio) {
@@ -29,20 +30,23 @@ function AdminPanel() {
       return;
     }
 
-    const formData = new FormData();
-    formData.append('nombre', newItem.nombre);
-    formData.append('descripcion', newItem.descripcion);
-    formData.append('precio', newItem.precio);
-    if (newItem.imagen) formData.append('imagen', newItem.imagen);
-
     try {
-      const response = await axios.post(`${API_URL}/api/menu`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+      const response = await fetch('/api/addMenuItem', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newItem),
       });
 
-      setMenuItems([...menuItems, response.data]);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const addedItem = await response.json();
+      setMenuItems([...menuItems, addedItem]);
       setNewItem({ nombre: '', descripcion: '', precio: '', imagen: null });
-      setPreviewImage(''); // Limpiar la vista previa
+      setPreviewImage('');
     } catch (error) {
       console.error('Error al agregar el ítem:', error);
     }
@@ -50,45 +54,44 @@ function AdminPanel() {
 
   const handleEdit = (item) => {
     setEditingItem(item);
-    setPreviewImage(item.imagen ? `http://localhost:5000${item.imagen}` : '');
-    setOriginalImage(item.imagen ? `http://localhost:5000${item.imagen}` : '');
+    setPreviewImage(item.imagen || '');
+    setOriginalImage(item.imagen || '');
   };
 
   const handleSaveEdit = async () => {
-    const formData = new FormData();
-    formData.append('nombre', editingItem.nombre);
-    formData.append('descripcion', editingItem.descripcion);
-    formData.append('precio', editingItem.precio);
-  
-    if (editingItem.imagen instanceof File) {
-      // Si hay una nueva imagen seleccionada, añadirla al FormData
-      formData.append('imagen', editingItem.imagen);
-      console.log("se selecciono una");
-    } else {
-      // Si no hay nueva imagen, enviar la URL de la imagen original
-      formData.append('imagen', originalImage); // `originalImage` debe ser la URL de la imagen original
-      console.log("NO se selecciono una");
-      console.log(originalImage);
-    }
-  
     try {
-      const response = await axios.put(`${API_URL}/api/menu/${editingItem._id}`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+      const response = await fetch(`/api/updateMenuItem?id=${editingItem.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(editingItem),
       });
-      setMenuItems(menuItems.map(item => item._id === editingItem._id ? response.data : item));
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const updatedItem = await response.json();
+      setMenuItems(menuItems.map(item => item.id === updatedItem.id ? updatedItem : item));
       setEditingItem(null);
-      setPreviewImage(''); // Limpiar la vista previa
+      setPreviewImage('');
     } catch (error) {
       console.error('Error al guardar la edición', error);
     }
   };
-  
-  
-  
+
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${API_URL}/api/menu/${id}`);
-      setMenuItems(menuItems.filter(item => item._id !== id));
+      const response = await fetch(`/api/deleteMenuItem?id=${id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      setMenuItems(menuItems.filter(item => item.id !== id));
     } catch (error) {
       console.error('Error al eliminar el elemento', error);
     }
@@ -108,7 +111,7 @@ function AdminPanel() {
 
       <ul className='product-list'>
         {menuItems.map(item => (
-          <li key={item._id} className='product-item'>
+          <li key={item.id} className='product-item'>
             <div className='product-info'>
               <span className='product-name'>{item.nombre}</span>
               <br />
@@ -119,15 +122,14 @@ function AdminPanel() {
               </span>
               <div className='product-buttons'>
                 <button onClick={() => handleEdit(item)}>Editar</button>
-                <button onClick={() => handleDelete(item._id)}>Eliminar</button>
+                <button onClick={() => handleDelete(item.id)}>Eliminar</button>
               </div>
             </div>
-            {item.imagen && <img src={`http://localhost:5000${item.imagen}`} alt={item.nombre} className='product-image' />}
+            {item.imagen && <img src={item.imagen} alt={item.nombre} className='product-image' />}
           </li>
         ))}
       </ul>
 
-      {/* Sección para editar ítem */}
       {editingItem && (
         <div className="admin-edit">
           <h2>Editar Oferta</h2>
@@ -166,7 +168,6 @@ function AdminPanel() {
         </div>
       )}
 
-      {/* Sección para agregar nuevo ítem */}
       <div className="admin-add">
         <h2>Agregar <br />Nuevo Ítem</h2>
         <input
