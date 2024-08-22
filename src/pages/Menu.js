@@ -11,7 +11,7 @@ function Menu() {
     async function fetchMenuItems() {
       try {
         setLoading(true);
-        const response = await fetch('/api/getMenu.js');
+        const response = await fetch('/api/getMenu');
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
