@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Card from '../components/Card';
+import { getMenuItems } from '../utils/storage';
 import '../index.css';
 
 function Menu() {
@@ -11,15 +12,11 @@ function Menu() {
     async function fetchMenuItems() {
       try {
         setLoading(true);
-        const response = await fetch('./api/getMenu');
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
+        const data = await getMenuItems();
         setMenuItems(data);
       } catch (error) {
         console.error('Error fetching the menu items', error);
-        setError('Error al cargar el menú. Por favor, intenta de nuevo más tarde.');
+        setError('Error al cargar el menú. Llama a +5354547503');
       } finally {
         setLoading(false);
       }
@@ -31,18 +28,11 @@ function Menu() {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="menu-container">
+    <div className="menu">
       <h1>Menú</h1>
-      <div className="menu-grid">
+      <div className="menu-items">
         {menuItems.map(item => (
-          <Card
-            key={item._id}
-            image={item.imagen}
-            title={item.nombre}
-            price={item.precio}
-            description={item.descripcion}
-            id={item._id}
-          />
+          <Card key={item.id} {...item} />
         ))}
       </div>
     </div>

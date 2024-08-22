@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
+import React, { useState, useEffect } from 'react';
+import { getMenuItems, addMenuItem, updateMenuItem, deleteMenuItem } from '../utils/storage';
+
 function AdminPanel() {
   const [menuItems, setMenuItems] = useState([]);
   const [newItem, setNewItem] = useState({ nombre: '', descripcion: '', precio: '', imagen: null });
@@ -12,11 +15,7 @@ function AdminPanel() {
 
   async function fetchMenuItems() {
     try {
-      const response = await fetch('/api/getMenu');
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
+      const data = await getMenuItems();
       setMenuItems(data);
     } catch (error) {
       console.error('Error al obtener los ítems del menú', error);
@@ -53,21 +52,9 @@ function AdminPanel() {
 
     try {
       const imageUrl = await handleImageUpload(newItem.imagen);
-
-      const response = await fetch('/api/addMenuItem', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ ...newItem, imagen: imageUrl }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const addedItem = await response.json();
-      setMenuItems([...menuItems, addedItem]);
+      const newItemWithImage = { ...newItem, imagen: imageUrl, id: Date.now().toString() };
+      await addMenuItem(newItemWithImage);
+      setMenuItems([...menuItems, newItemWithImage]);
       setNewItem({ nombre: '', descripcion: '', precio: '', imagen: null });
       setPreviewImage('');
     } catch (error) {
@@ -87,19 +74,9 @@ function AdminPanel() {
         imageUrl = await handleImageUpload(editingItem.imagen);
       }
 
-      const response = await fetch(`/api/updateMenuItem?id=${editingItem.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ ...editingItem, imagen: imageUrl }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const updatedItem = await response.json();
+      const updatedItem = { ...editingItem, imagen: imageUrl };
+      const index = menuItems.findIndex(item => item.id === updatedItem.id);
+      await updateMenuItem(index, updatedItem);
       setMenuItems(menuItems.map(item => item.id === updatedItem.id ? updatedItem : item));
       setEditingItem(null);
       setPreviewImage('');
@@ -110,14 +87,8 @@ function AdminPanel() {
 
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`/api/deleteMenuItem?id=${id}`, {
-        method: 'DELETE',
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
+      const index = menuItems.findIndex(item => item.id === id);
+      await deleteMenuItem(index);
       setMenuItems(menuItems.filter(item => item.id !== id));
     } catch (error) {
       console.error('Error al eliminar el elemento', error);
