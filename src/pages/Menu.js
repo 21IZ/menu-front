@@ -7,6 +7,8 @@ function Menu() {
   const [menuItems, setMenuItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  console.log('KV_REST_API_URL:', process.env.KV_REST_API_URL);
+  console.log('KV_REST_API_TOKEN:', process.env.KV_REST_API_TOKEN);
 
   useEffect(() => {
     async function fetchMenuItems() {
