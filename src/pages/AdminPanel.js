@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-
-import React, { useState, useEffect } from 'react';
 import { getMenuItems, addMenuItem, updateMenuItem, deleteMenuItem } from '../utils/storage';
 
 function AdminPanel() {
